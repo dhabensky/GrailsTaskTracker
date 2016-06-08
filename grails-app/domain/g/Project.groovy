@@ -2,11 +2,8 @@ package g
 
 class Project {
 
-    static constraints = {
-
-    }
-
 	String name;
 	String status;
-
+	static hasMany = [columns:Column]
+	
 }

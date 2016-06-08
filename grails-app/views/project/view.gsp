@@ -14,6 +14,10 @@
 	<body>
 		<h1>${p.name.toUpperCase()}</h1>
 		<br>
+		<table style="width:100%; border: 1px solid black">
+			<tr><g:each var="col" in="${taskMap}"><th>${col[0].name}</th></g:each></tr>
+			<tr><g:each var="col" in="${taskMap}"><td>${col[1]*.name}</td></g:each></tr>
+		</table>
 		<hr>
 		<button><a href="/project/edit/${params.id}">Edit...</a></button>
 		<button><a href="/project/delete/${params.id}">Delete</a></button>

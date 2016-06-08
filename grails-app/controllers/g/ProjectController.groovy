@@ -1,5 +1,6 @@
 package g
 
+
 class ProjectController {
 
 	def index() {
@@ -7,7 +8,9 @@ class ProjectController {
 	}
 
 	def view() {
-		[p:curProject()]
+		def p = curProject()
+//		render "${Task.findAll()}"
+		[p:p, taskMap:Column.findAllByProject(p).collect { [it, Task.findAllByColumn(it)] }]
 	}
 
 	def create() {
