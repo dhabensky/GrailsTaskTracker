@@ -8,7 +8,7 @@
 <g:if test="${session?.user}">
 </g:if>
 <g:else>
-  <g:form class="simpleform" style="width:50%;" url="&#91;controller:'user',action:'login'&#93;">
+  <g:form class="simpleform" style="width:50%;" controller="user"  method="post" action="login">
     <fieldset>
       <legend>Login</legend>
       <p class="info">

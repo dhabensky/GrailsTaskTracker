@@ -5,7 +5,7 @@
   <meta name="layout" content="main" />
 </head>
 <body>
-<g:form class="simpleform" url="&#91;controller:'user',action:'register'&#93;">
+<g:form class="simpleform" controller="user" method="post" action="register">
   <fieldset>
     <legend>User Registration</legend>
     <p class="info">
