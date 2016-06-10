@@ -6,6 +6,9 @@
 </head>
 <body>
 <g:if test="${session?.user}">
+	<br>
+	<a href="/project"><h3>To projects</h3></a>
+	<br>
 </g:if>
 <g:else>
   <g:form class="simpleform" style="width:50%;" controller="user"  method="post" action="login">
