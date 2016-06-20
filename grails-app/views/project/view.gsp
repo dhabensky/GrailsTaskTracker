@@ -9,17 +9,49 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Sample title</title>
+        <link rel="stylesheet" href="${resource(dir:'stylesheets',file:'bootstrap.min.css')}" />
+        <link rel="stylesheet" href="${resource(dir:'stylesheets',file:'bootstrap-theme.min.css')}" />
+        <link rel="stylesheet" href="${resource(dir:'stylesheets',file:'main.css')}" />
+        <script src="${resource(dir:'javascripts',file:'jquery.min.js')}"></script>
+		<script src="${resource(dir:'javascripts',file:'bootstrap.min.js')}"></script>
+		<title>${p.name}</title>
 	</head>
 	<body>
-		<h1>${p.name.toUpperCase()}</h1>
-		<br>
-		<table style="width:100%; border: 1px solid black">
-			<tr><g:each var="col" in="${taskMap}"><th>${col[0].name}</th></g:each></tr>
-			<tr><g:each var="col" in="${taskMap}"><td>${col[1]*.name}</td></g:each></tr>
-		</table>
-		<hr>
-		<button><a href="/project/edit/${params.id}">Edit...</a></button>
-		<button><a href="/project/delete/${params.id}">Delete</a></button>
+		
+		
+        
+        <div class="container-fluid">
+            <div class="project-header">
+                <span class='title'>${p.name}</span>
+                <span><a href="/project/edit/${params.id}">edit</a></span>
+                <span><a href="/project/delete/${params.id}">delete</a></span>
+            </div>
+            <div class="row">
+                <g:each var="col" in="${taskMap}">
+                    <div class="col-xs-4">
+                        <div class="thumbnail task-column">
+                            <div class="column-header">
+                                ${col[0].name.toUpperCase()}
+                            </div>
+                            <div class="tasks">
+                                <g:each var="t" in="${col[1]}">
+                                    <div class="task thumbnail">
+                                        <p>${t.name}</p>
+                                    </div>
+                                </g:each>
+                                
+                            </div>
+                            
+                                <div class="add-task-button">
+                                    <span>Add a task</span>
+                                </div>
+                        </div>
+                    </div>
+                </g:each>
+            </div>
+        </div>
+        
+        
+		
 	</body>
 </html>
