@@ -43,7 +43,7 @@
                             </div>
                             
                                 <div class="add-task-button">
-                                    <span>Add a task</span>
+                                    <span>Add a new task</span>
                                 </div>
                         </div>
                     </div>
