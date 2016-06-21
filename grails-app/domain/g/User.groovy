@@ -4,7 +4,7 @@ class User {
     // time stamps: automatically populated by GORM
     Date dateCreated
     Date lastUpdated
- 
+
     // properties
     String firstName
     String lastName
@@ -12,11 +12,11 @@ class User {
     String password        // plain text, not stored
     String confirm         // plain text, not stored
     String passwordHashed
- 
- 
+
+
     // transients
     static transients = ['password', 'confirm']
- 
+
     // constraints
     static constraints = {
         firstName blank:false;

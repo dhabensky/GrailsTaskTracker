@@ -2,20 +2,17 @@ package g
 
 class Task {
 
-	static belongsTo = [column:Column, assignee:User]
+	static belongsTo = [column:Column]
 
-	static hasOne = [status:TaskStatus]
-
-	String name;
-	String description;
-	Date   deadline;
+	String  name;
+	String  description;
+	Date    deadline;
+	boolean open;
 
 
 	static constraints = {
         description nullable: true
         deadline nullable: true
-        status nullable: true
-        assignee nullable: true
     }
 
 

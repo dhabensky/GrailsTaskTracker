@@ -1,15 +1,13 @@
 package g
 
+import java.text.SimpleDateFormat
+
 class TaskController {
 
     def index() { }
 
 	def view() {
 		[t:curTask()]
-	}
-
-	def create() {
-		[t:new Task()]
 	}
 
 	def edit() {
@@ -25,11 +23,13 @@ class TaskController {
 
 	def _save() {
 		def t = new Task()
-		t.title = params['title']
+		t.name = params['title']
 		t.description = params['description']
-		t.name = params['name']
+		SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
+		t.deadline = df.parse(params['deadline']);
+		t.column = Column.get(params['column_id'])
 		t.save()
-		redirect(action: '', controller: 'project', params: [:])
+		render ""
 	}
 
 	def delete() {

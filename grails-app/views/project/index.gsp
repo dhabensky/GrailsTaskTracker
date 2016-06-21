@@ -17,14 +17,14 @@
 		<title>TaskEditor</title>
 	</head>
 	<body>
-        <g:render template="/common/navbar" />  
-        
+        <g:render template="/common/navbar" />
+
         <div class="container">
 		<h2>Available Projects:</h2>
 		<ul>
 			<g:each var="p" in="${projects}">
 				<li>
-					<a href="/project/view/${p.id}">${p.name} [${p.status}]</a>
+					<a href="/project/view/${p.id}">${p.name}</a>
 				</li>
 			</g:each>
 			<hr>
