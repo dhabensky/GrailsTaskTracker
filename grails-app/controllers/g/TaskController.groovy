@@ -1,6 +1,7 @@
 package g
 
 import java.text.SimpleDateFormat
+import groovy.json.*
 
 class TaskController {
 
@@ -9,11 +10,18 @@ class TaskController {
 	}
 
 	def view() {
-		[t:curTask()]
-	}
-
-	def edit() {
-		[t:Task.findById(params.id)]
+		def t = curTask()
+		render "{"
+		render "name: ${t.name},"
+		render "description: ${t.description},"
+		SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
+		if (t.deadline)
+			render "deadline: ${df.format(t.deadline)},"
+		else
+			render "deadline: null,"
+		render "column_id: ${t.column.id},"
+		render "open: ${t.open}"
+		render "}"
 	}
 
 	def _new() {
@@ -28,7 +36,7 @@ class TaskController {
 				render "${it}"
 			}
 		}
-		render ""
+		redirect(controller: 'project', action: 'view', params: [id: params['project_id']])
 	}
 
 	def _save() {
@@ -43,15 +51,16 @@ class TaskController {
 				render "${it}"
 			}
 		}
-		redirect(controller: 'project', action: 'view', params['project_id'])
+		redirect(controller: 'project', action: 'view', params: [id: params['project_id']])
 	}
 
 	def delete() {
-		Task.get(params['id']).delete()
+		curTask().delete()
 		render ""
 	}
 
 	private def curTask() {
 		return Task.findById(params.id)
 	}
+
 }

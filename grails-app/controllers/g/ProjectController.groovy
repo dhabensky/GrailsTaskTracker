@@ -24,7 +24,6 @@ class ProjectController {
 	def _new() {
 		def p = new Project()
 		p.name = params['name']
-		p.status = params['status'].toUpperCase()
 		p.save()
 		new Column('Todo', p).save()
 		new Column('Doing', p).save()
@@ -35,7 +34,6 @@ class ProjectController {
 	def _save() {
 		def p = curProject()
 		p.name = params['name']
-		p.status = params["status"].toUpperCase()
 		p.save()
 		redirect(action: '', controller: 'project', params: [:])
 	}
