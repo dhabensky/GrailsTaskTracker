@@ -26,6 +26,9 @@ class ProjectController {
 		p.name = params['name']
 		p.status = params['status'].toUpperCase()
 		p.save()
+		new Column('Todo', p).save()
+		new Column('Doing', p).save()
+		new Column('Done', p).save()
 		redirect(action: '', controller: 'project', params: [:])
 	}
 
