@@ -43,7 +43,7 @@ class TaskController {
 				render "${it}"
 			}
 		}
-		render ""
+		redirect(controller: 'project', action: 'view', params['project_id'])
 	}
 
 	def delete() {
