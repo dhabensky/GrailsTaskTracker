@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat
 
 class TaskController {
 
-    def index() { }
+    def index() {
+		render "${Task.findAll()*.name}"
+	}
 
 	def view() {
 		[t:curTask()]
@@ -16,25 +18,37 @@ class TaskController {
 
 	def _new() {
 		def t = new Task()
-		t.name = params['name']
-		t.save()
-		redirect(action: '', controller: 'project', params: [:])
-	}
-
-	def _save() {
-		def t = new Task()
 		t.name = params['title']
 		t.description = params['description']
 		SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
 		t.deadline = df.parse(params['deadline']);
 		t.column = Column.get(params['column_id'])
-		t.save()
+		if (!t.save()) {
+			t.errors.each {
+				render "${it}"
+			}
+		}
+		render ""
+	}
+
+	def _save() {
+		def t = Task.get(params['id'])
+		t.name = params['title']
+		t.description = params['description']
+		SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
+		t.deadline = df.parse(params['deadline']);
+		t.column = Column.get(params['column_id'])
+		if (!t.save()) {
+			t.errors.each {
+				render "${it}"
+			}
+		}
 		render ""
 	}
 
 	def delete() {
-		Task.findById(params.id).delete()
-		redirect(action: '', controller: 'project', params: [:])
+		Task.get(params['id']).delete()
+		render ""
 	}
 
 	private def curTask() {
