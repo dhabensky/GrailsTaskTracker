@@ -43,16 +43,22 @@
                             <hr>
                             <div class="tasks">
                                 <g:each var="t" in="${col[1]}">
-                                    <div id="${t.id}"class="task thumbnail">
+                                    <div id="${t.id}" class="task thumbnail">
                                         <p>${t.name}</p>
                                     </div>
                                 </g:each>
                                 
                             </div>
-                            <hr>
-                            <div id="${col[0].id}" class="add-task-button">
-                                <span>Add a new task</span>
-                            </div>
+                            
+
+                            <g:if test = '${col[0].name.toUpperCase()=="TODO"}'>
+                                <hr>
+                                <div id="${col[0].id}" class="add-task-button">
+                                    <span>Add a new task</span>
+                                </div>
+                            </g:if>
+
+
                         </div>
                     </div>
                 </g:each>
@@ -63,7 +69,7 @@
         <div class="modal fade" id="createTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <g:form class="simpleform" style="width:100%;" controller="user"  method="post" action="login">
+                    <g:form class="simpleform" style="width:100%;" controller="task"  method="post" action="_save">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h3 class="modal-title">Create task</h3>
@@ -87,10 +93,12 @@
                                     <g:textField class="form-control datepicker" name="deadline" autocomplete="off" />
                                 </div>
 
+                                <g:hiddenField name="column_id" value="${taskMap[0][0].id}" />
+
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                          <button id="submitCrTask" type="button" class="btn btn-primary">Сохранить изменения</button>
+                          <g:submitButton id="submitCrTask" class="btn btn-primary" name="submitButton" value="Сохранить изменения" />
                         </div>
                     </g:form>
                 </div><!-- /.modal-content -->
