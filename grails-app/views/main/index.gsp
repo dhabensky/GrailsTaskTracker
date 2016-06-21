@@ -42,10 +42,11 @@
               </div>
               
               <div style="position: relative;">
-                <g:submitButton class="button" name="submitButton" value="LOGIN" />
+                <g:submitButton class="button" name="submitButton" value="SIGN IN" />
               </div>
               
               <p>
+                
                 Don't have an account?
                 <g:link controller="user" action="register">Sign up now!</g:link>
               </p>

@@ -14,11 +14,11 @@ class UserController {
             } else {
                 // validate/save ok, store user in session, redirect to homepage
                 session.user = u
-                redirect(controller:'main')
+                redirect(controller:'project')
             }
         } else if (session.user) {
             // don't allow registration while user is logged in
-            redirect(controller:'main')
+            redirect(controller:'project')
         }
     }
  
@@ -29,14 +29,14 @@ class UserController {
             if (u) {
                 // username and password match -> log in
                 session.user = u
-                redirect(controller:'main')
+                redirect(controller:'project')
             } else {
                 flash.message = "User not found"
                 redirect(controller:'main')
             }
         } else if (session.user) {
             // don't allow login while user is logged in
-            redirect(controller:'main')
+            redirect(controller:'project')
         }
     }
  

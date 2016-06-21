@@ -707,6 +707,36 @@ hr {
     width: 100%;
 }
 
+.registerform {
+    margin-top: 100px;
+    height: 750px;
+}
+
+.registerform .form-content{
+    height: 500px;
+} 
+
+.registerform .form-content .button{
+    width: 200px;
+    margin-left: 50px;
+} 
+.registerform .form-content h2{
+    margin:0;
+    width: 100%;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+} 
+
+.registerform .form-content .errors{
+    margin:0;
+} 
+
+.loginform .form-content .button:hover{
+    background: #666;
+    color: #fff;
+} 
+
 
 
 
