@@ -24,6 +24,12 @@ class TaskController {
 		render "}"
 	}
 
+	def _close() {
+		def t = curTask()
+		t.open = false
+		t.save()
+	}
+
 	def _new() {
 		def t = new Task()
 		t.name = params['title']

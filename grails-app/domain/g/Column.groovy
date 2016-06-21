@@ -6,6 +6,11 @@ class Column {
 	String name;
 	int    index;
 
+
+	static constraints = {
+        project nullable: false
+		name blank: false
+    }
 	
 	def Column() {
 
