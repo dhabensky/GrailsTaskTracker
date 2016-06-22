@@ -34,9 +34,20 @@ class TaskController {
 	def _new() {
 		def t = new Task()
 		t.name = params['title']
+		if (t.name == null || t.name.equals('')) {
+			redirect(controller: 'project', action: 'view', params: [id: params['project_id']])
+			return;
+		}
 		t.description = params['description']
 		SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
-		t.deadline = df.parse(params['deadline']);
+		try {
+			t.deadline = df.parse(params['deadline']);
+		}
+		catch (Exception ex) {
+			redirect(controller: 'project', action: 'view', params: [id: params['project_id']])
+			return;
+		}
+//		t.deadline = df.parse(params['deadline']);
 		t.column = Column.get(params['column_id'])
 		if (!t.save()) {
 			t.errors.each {
@@ -47,16 +58,22 @@ class TaskController {
 	}
 
 	def _save() {
-		def t = Task.get(params['id'])
-		t.name = params['title']
-		t.description = params['description']
-		SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
-		t.deadline = df.parse(params['deadline']);
-		t.column = Column.get(params['column_id'])
-		if (!t.save()) {
-			t.errors.each {
-				render "${it}"
+		try {
+			def t = Task.get(params['id'])
+			t.name = params['title']
+			t.description = params['description']
+			SimpleDateFormat df = new SimpleDateFormat('MM/dd/yyyy');
+			t.deadline = df.parse(params['deadline']);
+			t.column = Column.get(params['column_id'])
+			if (!t.save()) {
+				throw new NullPointerException()
+//				t.errors.each {
+//					render "${it}"
+//				}
 			}
+		}
+		catch (Exception ex) {
+			redirect(controller: 'project', action: 'view', params: [id: params['project_id']])
 		}
 		redirect(controller: 'project', action: 'view', params: [id: params['project_id']])
 	}

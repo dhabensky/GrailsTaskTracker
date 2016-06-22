@@ -19,14 +19,14 @@
 		<title>${p.name}</title>
 	</head>
 	<body>
-        
-
-
-        <g:render template="/common/navbar" /></div>    
 
 
 
-        
+        <g:render template="/common/navbar" /></div>
+
+
+
+
         <div class="container">
             <div class="project-header">
                 <span class='title'>${p.name}</span>
@@ -48,9 +48,9 @@
                                     </div>
 
                                 </g:each>
-                                
+
                             </div>
-                            
+
 
                             <g:if test = '${col[0].name.toUpperCase()=="TODO"}'>
                                 <hr>
@@ -65,8 +65,8 @@
                 </g:each>
             </div>
         </div>
-        
-        
+
+
         <div class="modal fade" id="createTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -111,7 +111,7 @@
         <div class="modal fade" id="editTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    
+
                         <div class=" modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h3 class=" modal-title">Edit task</h3>
@@ -148,7 +148,7 @@
                                 </div>
 
 
-                                
+
 
                                 <div class="input-group date" data-provide="datepicker-inline">
 
@@ -161,14 +161,14 @@
                                     <div class="container-fluid">
                                     <div class="row">
 
-                                        <g:radioGroup name="column_id" labels="[taskMap[0][0].name.toUpperCase(), taskMap[1][0].name.toUpperCase(), taskMap[2][0].name.toUpperCase()]" 
+                                        <g:radioGroup name="column_id" labels="[taskMap[0][0].name.toUpperCase(), taskMap[1][0].name.toUpperCase(), taskMap[2][0].name.toUpperCase()]"
                                         values="[taskMap[0][0].id, taskMap[1][0].id, taskMap[2][0].id]" value="taskMap[0][0].id" >
 
                                             <div class="col-xs-4 column-picker">
 
                                                    ${it.radio}<br>
                                                    <span style="width: 100%; text-align:center; font-weight: bold">${it.label}<span>
-                                                   
+
                                             </div>
                                         </g:radioGroup>
                                     </div>
@@ -186,27 +186,27 @@
         </div><!-- /.modal -->
 
 
-        
+
         <script>
-            
-            
+
+
             $('.datepicker').datepicker();
 
             $( ".add-task-button" ).click(function() {
                 var columnID = $(this).attr('id');
-                
+
                 $('#createTaskModal').modal({
                   });
-                  
-                	
-                $( "#submitCrTask").unbind( "click" );  
-                  
+
+
+                $( "#submitCrTask").unbind( "click" );
+
                 $('#submitCrTask').click(function() {
                     console.log(columnID);
                     $('#myModal').modal('hide');
 
                 })
-                
+
             });
 
             $('.task').click(function() {
@@ -232,12 +232,12 @@
                             alert(xhr.responseText); //<----when no data alert the err msg
                         }
                     });
-                    
+
                     $('#editTaskModal').modal({
                      });
-                    
-                    $( "#submitEdTask").unbind( "click" );  
-                  
+
+                    $( "#submitEdTask").unbind( "click" );
+
                     $('#submitEdTask').click(function() {
                         $('#myModal').modal('hide');
 
@@ -246,6 +246,7 @@
 
             var checkdate = function() {
                 var date = $('#edit-modal').find("input#deadline").val();
+				console.log(date)
                 var arr = date.split("/");
                 console.log(arr);
                 if (arr.size() != 3) return false;
@@ -259,7 +260,7 @@
                 return true;
             }
         </script>
-        
-		
+
+
 	</body>
 </html>
