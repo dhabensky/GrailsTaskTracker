@@ -72,7 +72,7 @@
         <div class="modal fade" id="createTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <g:form class="simpleform" style="width:100%;" onSubmit="return checkdate()" controller="task"  method="post" action="_new">
+                    <g:form class="simpleform" style="width:100%;" onSubmit="return checkCreateForm()" controller="task"  method="post" action="_new">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h3 class="modal-title">Create task</h3>
@@ -131,7 +131,7 @@
 
 
                         </div>
-                        <g:form class="simpleform" style="width:100%;" onSubmit="return checkdate()" controller="task"  method="post" action="_save">
+                        <g:form class="simpleform" style="width:100%;" onSubmit="return checkEditForm()" controller="task"  method="post" action="_save">
                         <div id="edit-modal" class="modal-body">
 
                                 <g:hiddenField name="id" value="0" />
@@ -250,16 +250,25 @@
 
             $('#create-modal').validator()
 
-            var checkdate = function() {
 
-                var titlestr = $('#edit-modal').find("input#title").val();
-                var descstr = $('#edit-modal').find("input#description").val();
+            var checkCreateForm() = function() {
+                return checkform('#create-modal')
+            }
+
+            var checkEditForm() = function() {
+                return checkform('#edit-modal')
+            }
+
+            var checkform = function(formID) {
+
+                var titlestr = $(formID).find("input#title").val();
+                var descstr = $(formID).find("input#description").val();
 
                 if (titlestr.size() == 0) return false;
                 if (descstr.size() == 0) return false;
 
 
-                var dateString = $('#edit-modal').find("input#deadline").val();
+                var dateString = $(formID).find("input#deadline").val();
 				// First check for the pattern
                 if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
                     return false;
