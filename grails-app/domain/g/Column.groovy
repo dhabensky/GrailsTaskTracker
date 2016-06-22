@@ -2,6 +2,7 @@ package g
 
 class Column {
 
+	static hasMany = [tasks:Task]
 	static belongsTo = [project:Project]
 	String name;
 	int    index;
@@ -11,7 +12,12 @@ class Column {
         project nullable: false
 		name blank: false
     }
-	
+
+	static mapping = {
+        version false
+        tasks cascade: 'all-delete-orphan'
+    }
+
 	def Column() {
 
 	}

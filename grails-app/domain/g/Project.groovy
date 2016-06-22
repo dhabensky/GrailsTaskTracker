@@ -9,4 +9,9 @@ class Project {
         name blank: false
     }
 
+	static mapping = {
+        version false
+        columns cascade: 'all-delete-orphan'
+    }
+
 }

@@ -17,6 +17,10 @@ class Task {
 		column nullable: false
     }
 
+	static mapping = {
+        version false
+    }
+
 
 	def Task() {
 		this.open = true

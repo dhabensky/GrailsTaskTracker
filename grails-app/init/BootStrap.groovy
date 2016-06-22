@@ -25,10 +25,6 @@ class BootStrap {
 				println it
 			}
 		}
-
-		p = new Project()
-		p.setName("School of Drum")
-		p.save()
     }
     def destroy = {
     }

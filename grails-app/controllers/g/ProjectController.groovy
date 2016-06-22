@@ -10,7 +10,7 @@ class ProjectController {
 	def view() {
 		def p = curProject()
 //		render "${Task.findAll()}"
-		
+
         [p:p, taskMap:Column.findAllByProject(p).collect { [it, Task.findAllByColumnAndOpen(it, true)] }]
 	}
 
@@ -40,7 +40,9 @@ class ProjectController {
 	}
 
 	def delete() {
-		curProject().delete()
+		def p = curProject()
+//		p.columns*.delete()
+		p.delete()
 		redirect(action: '', controller: 'project', params: [:])
 	}
 

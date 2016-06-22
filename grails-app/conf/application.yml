@@ -10,6 +10,7 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: org.h2.Driver
+    logSql: true
     username: sa
     password:
 

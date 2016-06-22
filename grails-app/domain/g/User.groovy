@@ -27,4 +27,8 @@ class User {
                 return 'user.password.dontmatch'
         }
     }
+
+	static mapping = {
+        version false
+    }
 }
