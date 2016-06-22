@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="${resource(dir:'stylesheets',file:'main.css')}" />
         <script src="${resource(dir:'javascripts',file:'jquery.min.js')}"></script>
 		<script src="${resource(dir:'javascripts',file:'bootstrap.js')}"></script>
+
+        <script src="${resource(dir:'javascripts',file:'validator.js')}"></script>
         <script src="${resource(dir:'javascripts',file:'bootstrap-datepicker.js')}"></script>
 		<title>${p.name}</title>
 	</head>
@@ -70,29 +72,29 @@
         <div class="modal fade" id="createTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <g:form class="simpleform" style="width:100%;" controller="task"  method="post" action="_new">
+                    <g:form class="simpleform" style="width:100%;" onSubmit="return checkdate()" controller="task"  method="post" action="_new">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h3 class="modal-title">Create task</h3>
                         </div>
-                        <div class="modal-body">
+                        <div id="create-modal" class="modal-body">
                                 <g:hiddenField name="project_id" value="${p.id}" />
 
                                 <div class="input-group">
                                     <span> Title </span>
-                                    <g:textField class="form-control" name="title"  autocomplete="off" />
+                                    <g:textField class="form-control" name="title" required autocomplete="off" />
                                 </div>
 
                                 <div class="input-group">
                                     <span> Description </span>
-                                    <g:textArea rows="5" class="form-control" name="description" autocomplete="off" />
+                                    <g:textArea rows="5" class="form-control" name="description" required autocomplete="off" />
                                 </div>
 
 
                                 <div class="input-group date" data-provide="datepicker-inline">
 
                                     <span> Deadline date </span>
-                                    <g:textField class="form-control datepicker" name="deadline" autocomplete="off" />
+                                    <g:textField class="form-control datepicker" pattern = "^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}\$" name="deadline" autocomplete="off" />
                                 </div>
 
                                 <g:hiddenField name="column_id" value="${taskMap[0][0].id}" />
@@ -100,7 +102,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                          <g:submitButton id="submitCrTask" class="btn btn-primary" onSubmit="return confirm" name="submitButton" value="Сохранить изменения" />
+                          <g:submitButton id="submitCrTask" class="btn btn-primary"  name="submitButton" value="Сохранить изменения" />
                         </div>
                     </g:form>
                 </div><!-- /.modal-content -->
@@ -139,12 +141,12 @@
 
                                 <div class="input-group">
                                     <span> Title </span>
-                                    <g:textField class="form-control" name="title"  autocomplete="off" />
+                                    <g:textField class="form-control" name="title" required autocomplete="off" />
                                 </div>
 
                                 <div class="input-group">
                                     <span> Description </span>
-                                    <g:textArea rows="5" class="form-control" name="description" autocomplete="off" />
+                                    <g:textArea rows="5" class="form-control" name="description" required autocomplete="off" />
                                 </div>
 
 
@@ -244,20 +246,42 @@
                     })
             });
 
+            $('#edit-modal').validator()
+
+            $('#create-modal').validator()
+
             var checkdate = function() {
-                var date = $('#edit-modal').find("input#deadline").val();
-				console.log(date)
-                var arr = date.split("/");
-                console.log(arr);
-                if (arr.size() != 3) return false;
-                $.each(arr, function( index, value ) {
-                    console.log(value);
-                    if(value.match(/^\d+$/)){
-                        return false;
-                    }
-                });
-                console.log(arr);
-                return true;
+
+                var titlestr = $('#edit-modal').find("input#title").val();
+                var descstr = $('#edit-modal').find("input#description").val();
+
+                if (titlestr.size() == 0) return false;
+                if (descstr.size() == 0) return false;
+
+
+                var dateString = $('#edit-modal').find("input#deadline").val();
+				// First check for the pattern
+                if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+                    return false;
+
+                // Parse the date parts to integers
+                var parts = dateString.split("/");
+                var day = parseInt(parts[1], 10);
+                var month = parseInt(parts[0], 10);
+                var year = parseInt(parts[2], 10);
+
+                // Check the ranges of month and year
+                if(year < 1000 || year > 3000 || month == 0 || month > 12)
+                    return false;
+
+                var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+                // Adjust for leap years
+                if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+                    monthLength[1] = 29;
+
+                // Check the range of the day
+                return day > 0 && day <= monthLength[month - 1];
             }
         </script>
 
