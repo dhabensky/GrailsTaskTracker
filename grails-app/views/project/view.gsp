@@ -46,6 +46,7 @@
                                     <div id="${t.id}" class="task thumbnail">
                                         <p>${t.name}</p>
                                     </div>
+
                                 </g:each>
                                 
                             </div>
@@ -69,12 +70,13 @@
         <div class="modal fade" id="createTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <g:form class="simpleform" style="width:100%;" controller="task"  method="post" action="_save">
+                    <g:form class="simpleform" style="width:100%;" controller="task"  method="post" action="_new">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h3 class="modal-title">Create task</h3>
                         </div>
                         <div class="modal-body">
+                                <g:hiddenField name="project_id" value="${p.id}" />
 
                                 <div class="input-group">
                                     <span> Title </span>
@@ -98,7 +100,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                          <g:submitButton id="submitCrTask" class="btn btn-primary" name="submitButton" value="Сохранить изменения" />
+                          <g:submitButton id="submitCrTask" class="btn btn-primary" onSubmit="return confirm" name="submitButton" value="Сохранить изменения" />
                         </div>
                     </g:form>
                 </div><!-- /.modal-content -->
@@ -109,12 +111,31 @@
         <div class="modal fade" id="editTaskModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <g:form class="simpleform" style="width:100%;" controller="user"  method="post" action="login">
-                        <div class="modal-header">
+                    
+                        <div class=" modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                          <h3 class="modal-title">Edit task</h3>
+                          <h3 class=" modal-title">Edit task</h3>
+
+
+                          <g:form  class="edit-header-modal" style="width:100%;" controller="task"  method="post" action="_close">
+                            <div id="edit-header-modal">
+                              <g:hiddenField name="id" value="0" />
+                              <g:hiddenField name="project_id" value="${p.id}" />
+                            </div>
+                              <div style="display: inline-block">
+                                <g:submitButton id="closeTask" class="btn btn-danger" name="submitButton" value="Close task" />
+                              </div>
+                           </g:form>
+
+
                         </div>
-                        <div class="modal-body">
+                        <g:form class="simpleform" style="width:100%;" onSubmit="return checkdate()" controller="task"  method="post" action="_save">
+                        <div id="edit-modal" class="modal-body">
+
+                                <g:hiddenField name="id" value="0" />
+
+                                <g:hiddenField name="project_id" value="${p.id}" />
+
 
                                 <div class="input-group">
                                     <span> Title </span>
@@ -140,9 +161,14 @@
                                     <div class="container-fluid">
                                     <div class="row">
 
-                                        <g:radioGroup name="myGroup" values="[1,2,3]" value="1" >
+                                        <g:radioGroup name="column_id" labels="[taskMap[0][0].name.toUpperCase(), taskMap[1][0].name.toUpperCase(), taskMap[2][0].name.toUpperCase()]" 
+                                        values="[taskMap[0][0].id, taskMap[1][0].id, taskMap[2][0].id]" value="taskMap[0][0].id" >
+
                                             <div class="col-xs-4 column-picker">
-                                                   ${it.radio}
+
+                                                   ${it.radio}<br>
+                                                   <span style="width: 100%; text-align:center; font-weight: bold">${it.label}<span>
+                                                   
                                             </div>
                                         </g:radioGroup>
                                     </div>
@@ -152,7 +178,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                          <button id="submitCrTask" type="button" class="btn btn-primary">Сохранить изменения</button>
+                          <g:submitButton id="submitEdTask"  class="btn btn-primary" name="submitButton" value="Сохранить изменения" />
                         </div>
                     </g:form>
                 </div><!-- /.modal-content -->
@@ -162,6 +188,8 @@
 
         
         <script>
+            
+            
             $('.datepicker').datepicker();
 
             $( ".add-task-button" ).click(function() {
@@ -182,11 +210,54 @@
             });
 
             $('.task').click(function() {
-                $('#editTaskModal').modal({
-                  });
+                    var id = $(this).attr('id');
+                    $.ajax({
+                        url: "/task/view",
+                        type:"post",
 
+                        //dataType: 'json',
+                        data:{ id: id},
+                        success: function(data) {
+                            console.log(data); //<-----this logs the data in browser's console
+                            var task = jQuery.parseJSON( data );
+                            $('#editTaskModal').modal();
+                            $('#edit-header-modal').find("input#id").val(id);
+                            $('#edit-modal').find("input[name = id]").val(id);
+                            $('#edit-modal').find("input#title").val(task.name + "");
+                            $('#edit-modal').find("textarea#description").val(task.description + "");
+                            $('#edit-modal').find("input#deadline").val(task.deadline + "");
+                            $('#edit-modal').find("input[name = column_id][value=" + task.column_id + "]").attr('checked', true);
+                        },
+                        error: function(xhr){
+                            alert(xhr.responseText); //<----when no data alert the err msg
+                        }
+                    });
+                    
+                    $('#editTaskModal').modal({
+                     });
+                    
+                    $( "#submitEdTask").unbind( "click" );  
+                  
+                    $('#submitEdTask').click(function() {
+                        $('#myModal').modal('hide');
 
+                    })
             });
+
+            var checkdate = function() {
+                var date = $('#edit-modal').find("input#deadline").val();
+                var arr = date.split("/");
+                console.log(arr);
+                if (arr.size() != 3) return false;
+                $.each(arr, function( index, value ) {
+                    console.log(value);
+                    if(value.match(/^\d+$/)){
+                        return false;
+                    }
+                });
+                console.log(arr);
+                return true;
+            }
         </script>
         
 		

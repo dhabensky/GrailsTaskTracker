@@ -10,7 +10,8 @@ class ProjectController {
 	def view() {
 		def p = curProject()
 //		render "${Task.findAll()}"
-		[p:p, taskMap:Column.findAllByProject(p).collect { [it, Task.findAllByColumn(it)] }]
+		
+        [p:p, taskMap:Column.findAllByProject(p).collect { [it, Task.findAllByColumnAndOpen(it, true)] }]
 	}
 
 	def create() {

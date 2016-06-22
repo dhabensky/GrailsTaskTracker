@@ -14,10 +14,7 @@
 	<body>
 		<h1>New project</h1>
 		<form action="/project/_new">
-			Name:<input type="text" name="name"> <br>
-			<br>
-			Status:<input type="text" name="status"> <br>
-			<br>
+			Name:<input type="text" name="name">
 			<button>submit</button>
 		</form>
 		<h1></h1>

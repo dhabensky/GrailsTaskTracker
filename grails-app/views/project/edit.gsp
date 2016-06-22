@@ -15,9 +15,6 @@
 		<h1>${p.name.toUpperCase()}</h1>
 		<form action="/project/_save">
 			Name:<input type="text" name="name" value="${p.name}"> <br>
-			<br>
-			Status:<input type="text" name="status" value="${p.status}"> <br>
-			<br>
 			<button>submit</button>
 			<input type="hidden" name="id" value="${p.id}"/>
 		</form>
